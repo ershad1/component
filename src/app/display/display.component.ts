@@ -1,15 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
   styleUrls: ['./display.component.scss']
 })
-export class DisplayComponent implements OnInit {
+export class DisplayComponent implements OnChanges {
 
-  constructor() { }
+  @Input() time = null;
+
+  minutes: string = "00";
+  seconds: string = "00";
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.time) {
+      const minutes = Math.trunc(changes.time.currentValue / 60);
+      const seconds = Math.trunc(changes.time.currentValue - minutes * 60);
+
+      this.minutes = ("0" + minutes).substr(-2)
+      this.seconds = ("0" + seconds).substr(-2)
+    }
   }
 
 }
